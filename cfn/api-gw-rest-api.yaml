@@ -1,0 +1,18 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create API Gateway Rest API
+Parameters:
+  APIName:
+    Description: Name of Rest API
+    Type: String
+Resources:
+  SvcRestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name:
+        Ref: APIName
+
+Outputs:
+  APIID:
+    Value:
+      Ref: SvcRestApi

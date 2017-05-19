@@ -1,0 +1,81 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Lambda Roles
+Parameters:
+  Environment:
+    Description: Name of environment. Eg dev, test, prod
+    Type: String
+Resources:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Join:
+        - "_"
+        - - "LambdaExecutionRole"
+          - !Ref Environment
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      Path: "/"
+      Policies:
+      -
+        PolicyName:
+          Fn::Join:
+          - "_"
+          - - "logs"
+            - !Ref Environment
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource:
+            - Fn::Join:
+              - ":"
+              - - arn:aws:logs
+                - Ref: AWS::Region
+                - Ref: AWS::AccountId
+                - "*"
+      -
+        PolicyName:
+          Fn::Join:
+          - "_"
+          - - "dynamodb"
+            - !Ref Environment
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:DeleteItem
+            Resource: "*"
+      -
+        PolicyName:
+          Fn::Join:
+          - "_"
+          - - "s3"
+            - !Ref Environment
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - s3:*
+            Resource: "*"            
+Outputs:
+  LambdaExecutionRoleARN:
+    Value:
+      Fn::GetAtt:
+      - LambdaExecutionRole
+      - Arn

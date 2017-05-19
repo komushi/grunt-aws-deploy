@@ -1,0 +1,48 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Simple DynamoDB Table with id column
+Parameters:
+  TableName:
+    Description: Name of DynamoDB table
+    Type: String
+  TableIdColumnName:
+    Description: Name of DynamoDB table id column. Id column created is of type String
+    Type: String
+  IndexColumnName:
+    Description: Column to create global secondary index
+    Type: String
+  IndexName:
+    Description: Name of global secondary index
+    Type: String    
+Resources:
+  DynamoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName:
+        Ref: TableName
+      AttributeDefinitions:
+      - AttributeName:
+          Ref: TableIdColumnName
+        AttributeType: S
+      - AttributeName:
+          Ref: IndexColumnName
+        AttributeType: S
+      KeySchema:
+      - AttributeName:
+          Ref: TableIdColumnName
+        KeyType: HASH
+      GlobalSecondaryIndexes:
+      - IndexName: 
+          Ref: IndexName
+        KeySchema:
+        - AttributeName: 
+            Ref: IndexColumnName
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+        ProvisionedThroughput:
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10
+      ProvisionedThroughput:
+        ReadCapacityUnits: 10
+        WriteCapacityUnits: 10

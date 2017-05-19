@@ -1,0 +1,27 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Simple DynamoDB Table with id column
+Parameters:
+  TableName:
+    Description: Name of DynamoDB table
+    Type: String
+  TableIdColumnName:
+    Description: Name of DynamoDB table id column. Id column created is of type String
+    Type: String
+Resources:
+  DynamoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName:
+        Ref: TableName
+      AttributeDefinitions:
+      - AttributeName:
+          Ref: TableIdColumnName
+        AttributeType: S
+      KeySchema:
+      - AttributeName:
+          Ref: TableIdColumnName
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 10
+        WriteCapacityUnits: 10

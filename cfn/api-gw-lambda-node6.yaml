@@ -1,0 +1,43 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Lambda Resource for API Gateway
+Parameters:
+  LambdaFunctionName:
+    Description: Name of lambda function
+    Type: String
+  LambdaExecutionRoleARN:
+    Description: Lambda execution role ARN
+    Type: String
+Resources:
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: src/index.handler
+      Role:
+        Ref: LambdaExecutionRoleARN
+      FunctionName:
+        Ref: LambdaFunctionName
+      Code:
+        ZipFile:
+          Fn::Join:
+          - "\n"
+          - - exports.handler = function(event, context) {
+            - "  console.log('hello world!');"
+            - "};"
+      Runtime: nodejs4.3
+  LambdaAPIGWPermission:
+    Type: AWS::Lambda::Permission
+    Properties: 
+      FunctionName: 
+        Fn::GetAtt: 
+          - LambdaFunction
+          - Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "apigateway.amazonaws.com"
+
+Outputs:
+  LambdaARN:
+    Value:
+      Fn::GetAtt:
+      - LambdaFunction
+      - Arn

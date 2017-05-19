@@ -1,0 +1,24 @@
+{
+  "name": "grunt-aws-deploy",
+  "version": "0.0.1",
+  "description": "Set of reusable aws grunt tasks to deploy services to AWS",
+  "homepage": "https://github.com/",
+  "dependencies": {
+    "temporary": "~0.0.8",
+    "archiver": "~0.14.4",
+    "mkdirp": "~0.5.0",
+    "rimraf": "~2.2.8",
+    "glob": "~4.3.0",
+    "aws-sdk": "latest",
+    "proxy-agent": "latest",
+    "npm": "^2.10.0",
+    "q": "^1.4.1",
+    "es6-template-strings": "latest",
+    "request": "latest",
+    "fs": "latest",
+    "json-schema-ref-parser": "latest",
+    "js-yaml": "latest"
+  },
+  "author": "Lei Xu",
+  "license": "ISC"
+}
