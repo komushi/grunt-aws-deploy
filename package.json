@@ -2,7 +2,7 @@
   "name": "grunt-aws-deploy",
   "version": "0.0.1",
   "description": "Set of reusable aws grunt tasks to deploy services to AWS",
-  "homepage": "https://github.com/",
+  "homepage": "https://github.com/komushi/grunt-aws-deploy",
   "dependencies": {
     "temporary": "~0.0.8",
     "archiver": "~0.14.4",
