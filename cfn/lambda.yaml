@@ -1,0 +1,38 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Lambda Resources
+Parameters:
+  LambdaFunctionName:
+    Description: Name of lambda function
+    Type: String
+  LambdaExecutionRoleARN:
+    Description: Lambda execution role ARN
+    Type: String
+  HandlerName:
+    Description: Name of the handler
+    Type: String
+    Default: index.handler
+Resources:
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler:
+        Ref: HandlerName
+      Role:
+        Ref: LambdaExecutionRoleARN
+      FunctionName:
+        Ref: LambdaFunctionName
+      Code:
+        ZipFile:
+          Fn::Join:
+          - "\n"
+          - - exports.handler = function(event, context) {
+            - "  console.log('hello world!');"
+            - "};"
+      Runtime: nodejs4.3
+Outputs:
+  LambdaARN:
+    Value:
+      Fn::GetAtt:
+      - LambdaFunction
+      - Arn
